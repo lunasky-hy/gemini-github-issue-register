@@ -23,3 +23,10 @@ export interface ProcessStatus {
   success: number;
   total: number;
 }
+
+export interface BackupData {
+  config: AppConfig;
+  history?: HistoryItem[];
+  exported_at?: string;
+  app_version?: string;
+}
