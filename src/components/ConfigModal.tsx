@@ -64,13 +64,6 @@ export const ConfigModal: React.FC<ConfigModalProps> = ({
             <Settings className="w-5 h-5" />
             {firstTime ? "初期設定" : "設定変更"}
           </h2>
-          <button
-            onClick={handleUploadClick}
-            className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-50 rounded transition cursor-pointer"
-            title="設定ファイルを読み込む"
-          >
-            <Upload className="w-5 h-5" />
-          </button>
           <input
             type="file"
             ref={fileInputRef}
