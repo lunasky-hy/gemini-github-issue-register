@@ -19,6 +19,9 @@ Geminiが出力したIssueをGitHubに自動登録できるWebアプリです！
 2.  ブラウザのLocalStorageを利用するため、同一ブラウザであれば次回以降ログイン情報の再入力は不要です。
 3.  **注意**: セキュリティのため、共有PCなどで利用した後は必要に応じてLocalStorageをクリアしてください。
 
+![modal](./docs/modal.png)
+![main](./docs/main.png)
+
 ## Gemini用JSONテンプレート
 
 GeminiにIssueを生成させる際は、以下のフォーマットで出力するよう指示してください。

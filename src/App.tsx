@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import type { AppConfig, HistoryItem, Issue, ProcessStatus } from "./types";
+import type {
+  AppConfig,
+  HistoryItem,
+  Issue,
+  ProcessStatus,
+  BackupData,
+} from "./types";
 import { ConfigModal } from "./components/ConfigModal";
 import { HistorySidebar } from "./components/HistorySidebar";
 import { Header } from "./components/Header";
@@ -157,18 +163,7 @@ function App() {
 
         if (data.config && Array.isArray(data.history)) {
           if (confirm("現在の設定と履歴をファイルの内容で上書きしますか？")) {
-            setConfig(data.config);
-            setHistory(data.history);
-
-            localStorage.setItem(
-              "gemini_issue_importer_config",
-              JSON.stringify(data.config),
-            );
-            localStorage.setItem(
-              "gemini_issue_importer_history",
-              JSON.stringify(data.history),
-            );
-
+            handleFullRestore(data);
             alert("データを復元しました。");
           }
         } else {
@@ -179,6 +174,24 @@ function App() {
       }
     };
     reader.readAsText(file);
+  };
+
+  const handleFullRestore = (data: BackupData) => {
+    if (data.config) {
+      setConfig(data.config);
+      localStorage.setItem(
+        "gemini_issue_importer_config",
+        JSON.stringify(data.config),
+      );
+    }
+    if (data.history) {
+      setHistory(data.history);
+      localStorage.setItem(
+        "gemini_issue_importer_history",
+        JSON.stringify(data.history),
+      );
+    }
+    setIsConfigOpen(false);
   };
 
   const clearHistory = () => {
@@ -229,6 +242,7 @@ function App() {
         onSave={handleSaveConfig}
         config={config}
         firstTime={!config.token}
+        onImport={handleFullRestore}
       />
     </div>
   );
