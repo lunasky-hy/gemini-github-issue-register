@@ -17,6 +17,8 @@ export interface HistoryItem {
   html_url: string;
   created_at: string;
   repo: string;
+  isOpened?: boolean;
+  isPullRequest?: boolean;
 }
 
 export interface ProcessStatus {

@@ -12,7 +12,7 @@ import { Header } from "./components/Header";
 import { IssueInput } from "./components/IssueInput";
 import { IssuePreview } from "./components/IssuePreview";
 import { PromptHelper } from "./components/PromptHelper";
-import { createIssue } from "./utils/github";
+import { createIssue, fetchIssues } from "./utils/github";
 
 function App() {
   // --- State ---
@@ -23,6 +23,7 @@ function App() {
   });
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Input & Processing State
   const [jsonInput, setJsonInput] = useState("");
@@ -51,6 +52,24 @@ function App() {
   }, []);
 
   // --- Handlers ---
+  const handleSync = async () => {
+    setIsSyncing(true);
+    try {
+      const issues = await fetchIssues(config);
+      setHistory(issues);
+      localStorage.setItem(
+        "gemini_issue_importer_history",
+        JSON.stringify(issues),
+      );
+      alert(`${issues.length}件のIssueを同期しました！`);
+    } catch (err: any) {
+      console.error("Sync failed:", err);
+      alert(`同期に失敗しました: ${err.message}`);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   const handleSaveConfig = (newConfig: AppConfig) => {
     setConfig(newConfig);
     localStorage.setItem(
@@ -213,6 +232,8 @@ function App() {
         onUpload={handleFileUpload}
         onDownload={handleDownloadData}
         onOpenConfig={() => setIsConfigOpen(true)}
+        onSync={handleSync}
+        isSyncing={isSyncing}
       />
 
       <main className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
