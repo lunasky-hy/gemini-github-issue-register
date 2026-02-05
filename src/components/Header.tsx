@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Github, Upload, Download, Settings } from "lucide-react";
+import { Github, Upload, Download, Settings, RefreshCw } from "lucide-react";
 import type { AppConfig } from "../types";
 
 interface HeaderProps {
@@ -8,6 +8,8 @@ interface HeaderProps {
   onUpload: (file: File) => void;
   onDownload: () => void;
   onOpenConfig: () => void;
+  onSync: () => void;
+  isSyncing: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -16,6 +18,8 @@ export const Header: React.FC<HeaderProps> = ({
   onUpload,
   onDownload,
   onOpenConfig,
+  onSync,
+  isSyncing,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -50,6 +54,22 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
           )}
           <div className="h-6 w-px bg-gray-200 mx-1"></div>
+
+          <button
+            onClick={onSync}
+            disabled={!isConfigValid || isSyncing}
+            className={`p-2 rounded transition ${
+              !isConfigValid || isSyncing
+                ? "text-gray-300 cursor-not-allowed"
+                : "text-gray-500 hover:text-blue-600 hover:bg-gray-50 cursor-pointer"
+            }`}
+            title="GitHubと同期"
+          >
+            <RefreshCw
+              className={`w-5 h-5 ${isSyncing ? "animate-spin" : ""}`}
+            />
+          </button>
+
           <button
             onClick={handleUploadClick}
             className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-50 rounded transition cursor-pointer"
