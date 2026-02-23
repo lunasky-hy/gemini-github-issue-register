@@ -109,6 +109,13 @@ function App() {
     }
   };
 
+  const handleUpdateIssue = (index: number, updatedIssue: Issue) => {
+    const newIssues = [...parsedIssues];
+    newIssues[index] = updatedIssue;
+    setParsedIssues(newIssues);
+    setJsonInput(JSON.stringify(newIssues, null, 2));
+  };
+
   const handleImport = async () => {
     if (parsedIssues.length === 0) return;
 
@@ -284,7 +291,10 @@ function App() {
             onImport={handleImport}
             isConfigValid={isConfigValid}
           />
-          <IssuePreview issues={parsedIssues} />
+          <IssuePreview
+            issues={parsedIssues}
+            onUpdateIssue={handleUpdateIssue}
+          />
           <PromptHelper />
         </div>
 
