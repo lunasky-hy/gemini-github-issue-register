@@ -6,6 +6,7 @@ import {
   Settings,
   RefreshCw,
   FileText,
+  Info,
 } from "lucide-react";
 import type { AppConfig } from "../types";
 
@@ -16,6 +17,7 @@ interface HeaderProps {
   onDownload: () => void;
   onDownloadTasks: () => void;
   onOpenConfig: () => void;
+  onOpenInfo: () => void;
   onSync: () => void;
   isSyncing: boolean;
 }
@@ -27,6 +29,7 @@ export const Header: React.FC<HeaderProps> = ({
   onDownload,
   onDownloadTasks,
   onOpenConfig,
+  onOpenInfo,
   onSync,
   isSyncing,
 }) => {
@@ -114,6 +117,15 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Download className="w-5 h-5" />
           </button>
+
+          <button
+            onClick={onOpenInfo}
+            className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-50 rounded transition cursor-pointer"
+            title="使い方"
+          >
+            <Info className="w-5 h-5" />
+          </button>
+
           <button
             onClick={onOpenConfig}
             className="p-2 text-gray-500 hover:text-blue-600 hover:bg-gray-50 rounded transition cursor-pointer"

@@ -12,6 +12,7 @@ import { Header } from "./components/Header";
 import { IssueInput } from "./components/IssueInput";
 import { IssuePreview } from "./components/IssuePreview";
 import { PromptHelper } from "./components/PromptHelper";
+import { InfoModal } from "./components/InfoModal";
 import { createIssue, fetchIssues } from "./utils/github";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
   });
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
 
   // Input & Processing State
@@ -275,6 +277,7 @@ function App() {
         onDownload={handleDownloadData}
         onDownloadTasks={handleDownloadTasks}
         onOpenConfig={() => setIsConfigOpen(true)}
+        onOpenInfo={() => setIsInfoOpen(true)}
         onSync={handleSync}
         isSyncing={isSyncing}
       />
@@ -311,6 +314,8 @@ function App() {
         firstTime={!config.token}
         onImport={handleFullRestore}
       />
+
+      <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
     </div>
   );
 }
