@@ -52,5 +52,6 @@ export const fetchIssues = async (config: AppConfig) => {
     repo: `${config.owner}/${config.repo}`,
     isOpened: issue.state === "open",
     isPullRequest: !!issue.pull_request,
+    body: issue.body,
   }));
 };

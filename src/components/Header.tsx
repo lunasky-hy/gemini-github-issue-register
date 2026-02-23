@@ -1,5 +1,12 @@
 import React, { useRef } from "react";
-import { Github, Upload, Download, Settings, RefreshCw } from "lucide-react";
+import {
+  Github,
+  Upload,
+  Download,
+  Settings,
+  RefreshCw,
+  FileText,
+} from "lucide-react";
 import type { AppConfig } from "../types";
 
 interface HeaderProps {
@@ -7,6 +14,7 @@ interface HeaderProps {
   isConfigValid: boolean;
   onUpload: (file: File) => void;
   onDownload: () => void;
+  onDownloadTasks: () => void;
   onOpenConfig: () => void;
   onSync: () => void;
   isSyncing: boolean;
@@ -17,6 +25,7 @@ export const Header: React.FC<HeaderProps> = ({
   isConfigValid,
   onUpload,
   onDownload,
+  onDownloadTasks,
   onOpenConfig,
   onSync,
   isSyncing,
@@ -68,6 +77,19 @@ export const Header: React.FC<HeaderProps> = ({
             <RefreshCw
               className={`w-5 h-5 ${isSyncing ? "animate-spin" : ""}`}
             />
+          </button>
+
+          <button
+            onClick={onDownloadTasks}
+            disabled={!isConfigValid || isSyncing}
+            className={`p-2 rounded transition ${
+              !isConfigValid || isSyncing
+                ? "text-gray-300 cursor-not-allowed"
+                : "text-gray-500 hover:text-blue-600 hover:bg-gray-50 cursor-pointer"
+            }`}
+            title="タスク情報をマークダウンで出力"
+          >
+            <FileText className="w-5 h-5" />
           </button>
 
           <button

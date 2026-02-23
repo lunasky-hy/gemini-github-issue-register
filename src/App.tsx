@@ -173,6 +173,41 @@ function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleDownloadTasks = async () => {
+    setIsSyncing(true);
+    try {
+      const issues: Array<HistoryItem> = await fetchIssues(config);
+
+      const tasks = issues.filter((issue: HistoryItem) => !issue.isPullRequest);
+      const openTasks = tasks.filter((issue: HistoryItem) => issue.isOpened);
+      const closedTasks = tasks.filter((issue: HistoryItem) => !issue.isOpened);
+
+      const jsonOutput = {
+        onProgress: openTasks.map((it) => {
+          return { title: it.title };
+        }),
+        done: closedTasks.map((it) => {
+          return { title: it.title };
+        }),
+      };
+      const blob = new Blob([JSON.stringify(jsonOutput)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `tasks-export-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err: any) {
+      alert(`タスク情報の取得に失敗しました: ${err.message}`);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -231,6 +266,7 @@ function App() {
         isConfigValid={isConfigValid}
         onUpload={handleFileUpload}
         onDownload={handleDownloadData}
+        onDownloadTasks={handleDownloadTasks}
         onOpenConfig={() => setIsConfigOpen(true)}
         onSync={handleSync}
         isSyncing={isSyncing}

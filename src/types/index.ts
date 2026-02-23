@@ -19,6 +19,7 @@ export interface HistoryItem {
   repo: string;
   isOpened?: boolean;
   isPullRequest?: boolean;
+  body?: string;
 }
 
 export interface ProcessStatus {
